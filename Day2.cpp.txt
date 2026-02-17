@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int overlapInt(std::vector<std::vector<int>>& arr) {
+        if (arr.empty()) return 0;
+
+        // Finding the range of coordinates to minimize memory usage
+        int max_end = 0;
+        for (const auto& interval : arr) {
+            if (interval[1] > max_end) max_end = interval[1];
+        }
+
+        // Create a difference array. 
+        // We use max_end + 2 to handle inclusive boundaries and 1-based indexing safely.
+        std::vector<int> diff(max_end + 2, 0);
+
+        // Populate the difference array:
+        // Increment at start, decrement after the end (at end + 1)
+        for (const auto& interval : arr) {
+            diff[interval[0]]++;
+            diff[interval[1] + 1]--;
+        }
+
+        int max_overlap = 0;
+        int current_overlap = 0;
+
+        // Linear sweep to find the prefix sum maximum
+        for (int i = 0; i <= max_end; i++) {
+            current_overlap += diff[i];
+            if (current_overlap > max_overlap) {
+                max_overlap = current_overlap;
+            }
+        }
+
+        return max_overlap;
+    }
+};

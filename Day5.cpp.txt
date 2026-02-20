@@ -1,0 +1,27 @@
+class Solution {
+  public:
+    string findLargest(vector<int> &arr) {
+        // code here
+         // Convert integers to strings
+    vector<string> nums;
+    for (int num : arr)
+        nums.push_back(to_string(num));
+    
+    // Custom comparator
+    sort(nums.begin(), nums.end(), [](string a, string b) {
+        return a + b > b + a;
+    });
+    
+    // Edge case: if largest element is "0"
+    if (nums[0] == "0")
+        return "0";
+    
+    // Concatenate result
+    string result = "";
+    for (string s : nums)
+        result += s;
+    
+    return result;
+
+    }
+};
